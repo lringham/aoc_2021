@@ -65,7 +65,7 @@ pub fn day3() {
             }
 
             // update candidate_nums and recount bits
-            if next_candidate_nums.len() > 0 {
+            if !next_candidate_nums.is_empty() {
                 candidate_nums.clear();
 
                 for value in next_candidate_nums {

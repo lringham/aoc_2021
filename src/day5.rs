@@ -28,10 +28,9 @@ pub fn day5() {
         .iter()
         .reduce(|x, y| if y > x { y } else { x })
         .unwrap()
-        .0 ;
+        .0;
 
     for part in [1, 2] {
-        
         let mut vent_map = vec![vec![0; max_number + 1]; max_number + 1];
 
         for i in (0..numbers.len() - 1).step_by(2) {
@@ -98,7 +97,7 @@ pub fn day5() {
                 }
             }
         }
-        
+
         // print ans
         if part == 1 {
             println!("part 1 - Ans: {}", num_dangerous); // expected 5306

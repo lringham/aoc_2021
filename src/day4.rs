@@ -7,7 +7,6 @@ pub fn day4() {
         .split(',')
         .map(|s| s.parse::<usize>().unwrap())
         .collect();
-
     let mut boards: Vec<Board> = Vec::new();
 
     // create boards
@@ -40,13 +39,10 @@ pub fn day4() {
     let mut results: Vec<usize> = Vec::new();
     let mut boards_to_skip: Vec<usize> = Vec::new();
     for val in numbers {
-        //println!("Calling {}", val);
         for (i, board) in boards.iter_mut().enumerate() {
             if !boards_to_skip.contains(&i) {
                 board.put_mark(val);
                 if board.is_winning() {
-                    // println!(" -- we have a winner! ");
-                    // println!("Final Score: {}", board.score());
                     results.push(board.score());
                     boards_to_skip.push(i);
                 }
@@ -119,65 +115,50 @@ impl Board {
         }
     }
 
-    fn update(&mut self, x: usize, y: usize, num: usize) {
-        let mut found = true;
-        // check x
+    fn check_x(&self, y: usize) -> bool {
         for temp_x in 0..5 {
             if !self.rows[y][temp_x].1 {
-                found = false;
+                return false;
             }
         }
+        true
+    }
 
-        if found {
-            self.winning = true;
-            self.winning_num = num;
-            return;
-        }
-
-        // check y
-        found = true;
+    fn check_y(&self, x: usize) -> bool {
         for temp_y in 0..5 {
             if !self.rows[temp_y][x].1 {
-                found = false;
+                return false;
             }
         }
+        true
+    }
 
-        if found {
+    fn check_diag_up(&self) -> bool {
+        for temp_y in 0..5 {
+            for temp_x in 0..5 {
+                if !self.rows[temp_y][temp_x].1 {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+
+    fn check_diag_down(&self) -> bool {
+        for temp_y in (0..5).rev() {
+            for temp_x in 0..5 {
+                if !self.rows[temp_y][temp_x].1 {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+
+    fn update(&mut self, x: usize, y: usize, num: usize) {
+        if self.check_x(y) || self.check_y(x) || self.check_diag_up() || self.check_diag_down() {
             self.winning = true;
             self.winning_num = num;
-            return;
-        }
-
-        // check diags
-        if x == 2 && y == 2 {
-            found = true;
-            for temp_y in 0..5 {
-                for temp_x in 0..5 {
-                    if !self.rows[temp_y][temp_x].1 {
-                        found = false;
-                    }
-                }
-            }
-
-            if found {
-                self.winning = true;
-                self.winning_num = num;
-                return;
-            }
-
-            found = true;
-            for temp_y in (0..5).rev() {
-                for temp_x in 0..5 {
-                    if !self.rows[temp_y][temp_x].1 {
-                        found = false;
-                    }
-                }
-            }
-
-            if found {
-                self.winning = true;
-                self.winning_num = num;
-            }
         }
     }
 }

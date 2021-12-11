@@ -42,7 +42,7 @@ pub fn day2() {
             _ => {}
         }
     }
-    println!("part 1 - Ans: {}", x * y); // expected 1459206
+    println!("# part 1 - Ans: {}", x * y); // expected 1459206
 
     // part 2
     let mut x: i32 = 0;
@@ -59,5 +59,5 @@ pub fn day2() {
             _ => {}
         }
     }
-    println!("part 2 - Ans: {}", x * y); // expected 1320534480
+    println!("# part 2 - Ans: {}", x * y); // expected 1320534480
 }

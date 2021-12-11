@@ -1,10 +1,15 @@
 #![allow(dead_code)]
 mod day1;
+mod day10;
+mod day11;
 mod day2;
 mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
+mod day8;
+mod day9;
 mod helpers;
 
 use std::env;
@@ -19,7 +24,12 @@ fn main() {
         4 => day4::day4(),
         5 => day5::day5(),
         6 => day6::day6(),
-        _ => println!("Invalid command line args!\nUsage: cargo r day_num [1-31]"),
+        7 => day7::day7(),
+        8 => day8::day8(),
+        9 => day9::day9(),
+        10 => day10::day10(),
+        11 => day11::day11(),
+        _ => println!("Invalid command line args!\nUsage: cargo r day_num [1-25]"),
     }
 }
 
