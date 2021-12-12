@@ -56,8 +56,8 @@ pub fn day11() {
             println!("# part 1 - Ans: {}", flash_count);
         }
 
-        if cur_flash_count == width*height {
-            println!("# part 2 - Ans: {}", step+1);
+        if cur_flash_count == width * height {
+            println!("# part 2 - Ans: {}", step + 1);
             break;
         }
     }
