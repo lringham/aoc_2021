@@ -5,6 +5,7 @@ use std::collections::HashSet;
 pub fn day12() {
     let lines = helpers::read_file("inputs/day12.txt");
 
+    // build cave_system
     let mut cave_names: HashSet<String> = HashSet::new();
     let mut connections: Vec<(String, String)> = Vec::new();
     for line in lines {
@@ -30,80 +31,80 @@ pub fn day12() {
             .push(cave_index_map[&connection.0]);
     }
 
+    // find paths
     let start = &cave_system[cave_index_map[&("start".to_string())]];
-    let paths = find_all_paths(&start, &cave_system);
-    println!("# Ans {:?}", paths.len());
+
+    let paths = find_all_paths(&start, &cave_system, false);
+    println!("# part 1 - Ans: {}", paths.len());
+
+    let paths = find_all_paths(&start, &cave_system, true);
+    println!("# part 2 - Ans: {}", paths.len());
 }
 
 fn find_all_paths(
-    start : &Cave, 
-    cave_system: &Vec<Cave>,
-) -> Vec<Vec<String>> {
-    let mut paths: Vec<Vec<String>> = Vec::new();
-    find_path(
-        start,
-        cave_system,
-        &mut paths,
-    );
-    paths
-}
-
-fn find_path(
     cave: &Cave,
     cave_system: &Vec<Cave>,
-    previous_paths: &mut Vec<Vec<String>>,
-) {
+    allow_multi_visit: bool,
+) -> Vec<Vec<String>> {
+    let mut paths: Vec<Vec<String>> = Vec::new();
     let mut path: Vec<String> = Vec::new();
-    let mut can_double_visit_name = "no_cave".to_string();
+    let mut double_visit_name = if allow_multi_visit {
+        "".to_string()
+    } else {
+        "disabled".to_string()
+    };
     find_path_helper(
         cave,
         &mut path,
         cave_system,
-        previous_paths,
-        &mut can_double_visit_name,
+        &mut paths,
+        &mut double_visit_name,
     );
+    paths
 }
 
+// part 2
 fn find_path_helper(
     cave: &Cave,
     path: &mut Vec<String>,
     cave_system: &Vec<Cave>,
     previous_paths: &mut Vec<Vec<String>>,
-    can_double_visit_name : &mut String,
-) -> bool {
-    
-    if cave.is_small && path.contains(&cave.name) {
-        if !(*can_double_visit_name).eq("no_cave") || cave.name.eq("start") || cave.name.eq("end") {
-            return false;
-        } else {
-            *can_double_visit_name = cave.name.clone();
-        }
-    }
-    
+    double_visit_name: &mut String,
+) {
     path.push(cave.name.clone());
-    
+
     if cave.name.eq("end") {
         previous_paths.push(path.clone());
-        return true;
-    }
+    } else {
+        for adj_cave_idx in &cave.adjacent_caves {
+            let adj_cave = &cave_system[*adj_cave_idx];
+            let mut can_visit = !adj_cave.is_small || !path.contains(&adj_cave.name);
 
-    for adj_cave in &cave.adjacent_caves {
-        let next_cave = &cave_system[*adj_cave];
-        if find_path_helper(
-            &next_cave,
-            path,
-            cave_system,
-            previous_paths,
-            can_double_visit_name,
-        )  {
-            path.pop();
-            if (*can_double_visit_name).eq(&next_cave.name) {
-                *can_double_visit_name = "no_cave".to_string();
+            if !can_visit {
+                if (*double_visit_name).eq("")
+                    && !adj_cave.name.eq("start")
+                    && !adj_cave.name.eq("end")
+                {
+                    *double_visit_name = adj_cave.name.clone();
+                    can_visit = true;
+                }
+            }
+
+            if can_visit {
+                find_path_helper(
+                    &adj_cave,
+                    path,
+                    cave_system,
+                    previous_paths,
+                    double_visit_name,
+                );
+                path.pop();
+                if (*double_visit_name).eq(&adj_cave.name) {
+                    *double_visit_name = "".to_string();
+                }
             }
         }
     }
-
-    return true;
 }
 
 struct Cave {
