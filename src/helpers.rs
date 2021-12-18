@@ -39,3 +39,13 @@ pub fn get_neighbours(x: usize, y: usize, width: usize, height: usize) -> Vec<(u
 
     neighbours
 }
+
+pub fn print_grid(grid: &Vec<Vec<usize>>) {
+    for row in grid {
+        for v in row {
+            print!("{}", v);
+        }
+        println!();
+    }
+    println!();
+}

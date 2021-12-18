@@ -6,6 +6,8 @@ mod day12;
 mod day13;
 mod day14;
 mod day15;
+mod day16;
+mod day17;
 mod day2;
 mod day3;
 mod day4;
@@ -37,6 +39,8 @@ fn main() {
         13 => day13::day13(),
         14 => day14::day14(),
         15 => day15::day15(),
+        16 => day16::day16(),
+        17 => day17::day17(),
         _ => println!("Invalid command line args!\nUsage: cargo r day_num [1-25]"),
     }
 }

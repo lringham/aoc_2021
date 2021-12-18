@@ -17,24 +17,24 @@ pub fn day15() {
 
     let width = numbers[0].len();
     let height = numbers.len();
-    
-    let mut grid : Vec<Vec<usize>> = Vec::new();
-    for y in 0..height*5 {
+
+    let mut grid: Vec<Vec<usize>> = Vec::new();
+    for y in 0..height * 5 {
         grid.push(Vec::new());
-        for x in 0..width*5 {
+        for x in 0..width * 5 {
             let x_section = x / width;
             let y_section = y / height;
-            let mut num = numbers[y%height][x%width] + x_section + y_section;
+            let mut num = numbers[y % height][x % width] + x_section + y_section;
             num = num / 10 + num % 10;
-            grid[y].push(num); 
+            grid[y].push(num);
         }
     }
 
     // find path
     let width = numbers[0].len();
     let height = numbers.len();
-    let path = find_lowest_path(&grid, (0, 0), (width*5 - 1, height*5 - 1));
-    
+    let path = find_lowest_path(&grid, (0, 0), (width * 5 - 1, height * 5 - 1));
+
     // calc score
     let mut score = 0;
     for i in 1..path.len() {
